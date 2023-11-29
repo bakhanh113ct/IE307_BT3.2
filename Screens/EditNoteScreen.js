@@ -10,9 +10,9 @@ const EditNoteScreen = ({route, navigation}) => {
   const {refresh, item} = route.params;
   const [title, setTitle] = useState(item.Title);
   const [desc, setDesc] = useState(item.Description);
-  const {isDarkMode} = useAppContext();
+  const {isDarkMode, sizeRatio} = useAppContext();
 
-  const styles = styling(isDarkMode);
+  const styles = styling(isDarkMode, sizeRatio);
 
   const EditNote = async (title, desc) => {
     await db.transaction(async tx => {
@@ -68,7 +68,7 @@ const EditNoteScreen = ({route, navigation}) => {
   );
 };
 
-const styling = theme =>
+const styling = (theme, sizeRatio) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -78,7 +78,8 @@ const styling = theme =>
           : Colors.light.backgroundColor,
     },
     inputTitle: {
-      height: 40,
+      height: 55 * sizeRatio,
+      fontSize: 16 * sizeRatio,
       margin: 12,
       borderWidth: 1,
       padding: 10,
@@ -86,7 +87,8 @@ const styling = theme =>
       color: theme === true ? Colors.dark.textColor : Colors.light.textColor,
     },
     inputNote: {
-      height: 100,
+      height: 100 * sizeRatio,
+      fontSize: 16 * sizeRatio,
       margin: 12,
       borderWidth: 1,
       padding: 10,
@@ -102,8 +104,8 @@ const styling = theme =>
       borderColor: 'red',
       alignItems: 'center',
       justifyContent: 'center',
-      width: 40,
-      height: 40,
+      width: 40 * sizeRatio,
+      height: 40 * sizeRatio,
       backgroundColor: 'red',
       borderRadius: 50,
       marginHorizontal: 8,
@@ -113,8 +115,8 @@ const styling = theme =>
       borderColor: 'green',
       alignItems: 'center',
       justifyContent: 'center',
-      width: 40,
-      height: 40,
+      width: 40 * sizeRatio,
+      height: 40 * sizeRatio,
       backgroundColor: 'green',
       borderRadius: 50,
     },

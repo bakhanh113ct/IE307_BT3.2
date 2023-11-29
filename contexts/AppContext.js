@@ -1,4 +1,5 @@
 import React, {createContext, useContext, useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppContext = createContext(true);
 
@@ -7,12 +8,24 @@ export const useAppContext = () => {
 };
 
 const AppProvider = ({children}) => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [sizeRatio, setSizeRatio] = useState(1);
 
   useEffect(() => {
-    console.log('switch');
-  }, [isDarkMode]);
+    const getSizeRatio = async () => {
+      const tempSizeRatio = await AsyncStorage.getItem('@sizeRatio');
+      const tempIsDarkMode = await AsyncStorage.getItem('@isDarkMode');
+      console.log(tempSizeRatio);
+
+      if (tempIsDarkMode != null) {
+        setIsDarkMode(tempIsDarkMode === 'false' ? false : true);
+      }
+      if (tempSizeRatio) {
+        setSizeRatio(Number(tempSizeRatio));
+      }
+    };
+    getSizeRatio();
+  }, []);
 
   return (
     <AppContext.Provider
